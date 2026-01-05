@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="claro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTRATO+ | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== VARIÁVEIS DO SISTEMA ========== */
+        :root {
+            --primary: #0b1633;
+            --primary-dark: #070f22;
+            --primary-light: #0f1d45;
+            --primary-bg: rgba(11, 22, 51, 0.1);
+            
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+            
+            /* Modo Claro */
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --gray-lighter: #f3f4f6;
+            --border: #d1d5db;
+            --card-bg: white;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            
+            --sidebar-bg: #1e293b;
+            
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.15);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+            --transition-fast: all 0.15s ease;
+        }
+
+        [data-theme="escuro"] {
+            --primary: #0b1633;
+            --primary-dark: #070f22;
+            --primary-light: #0f1d45;
+            --primary-bg: rgba(11, 22, 51, 0.15);
+            
+            /* Modo Escuro */
+            --light: #111827;
+            --dark: #f9fafb;
+            --text: #f9fafb;
+            --text-light: #d1d5db;
+            --gray-light: #374151;
+            --gray-lighter: #1f2937;
+            --border: #4b5563;
+            --card-bg: #1f2937;
+            
+            --sidebar-bg: #111827;
+            
+            --shadow: 0 10px 25px rgba(0,0,0,0.3);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.4);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* ========== RESET ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            transition: var(--transition);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ========== LAYOUT PRINCIPAL ========== */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-sidebar {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-sidebar span:first-child {
+            letter-spacing: -1px;
+        }
+
+        .logo-sidebar span:last-child {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            border-left: 4px solid transparent;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding-left: 24px;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border-left-color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-email {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* ========== CONTEÚDO PRINCIPAL ========== */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        /* ========== TOP BAR ========== */
+        .top-bar {
+            height: 72px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--primary);
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .theme-toggle:hover {
+            background: var(--gray-lighter);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            outline: none;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ========== ÁREA DE CONTEÚDO ========== */
+        .content-area {
+            padding: 30px;
+            flex: 1;
+            background: var(--light);
+        }
+
+        /* ========== CARDS DE ESTATÍSTICAS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .stat-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            padding: 12px;
+            background: rgba(11, 22, 51, 0.1);
+            border-radius: var(--radius-sm);
+        }
+
+        .stat-content {
+            margin-top: 8px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 4px 0;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .stat-desc {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-progress {
+            height: 6px;
+            background: var(--gray-light);
+            border-radius: 3px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .stat-progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .stat-progress-bar.primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .stat-progress-bar.success {
+            background: linear-gradient(90deg, var(--secondary) 0%, #34d399 100%);
+        }
+
+        .stat-progress-bar.warning {
+            background: linear-gradient(90deg, var(--warning) 0%, #fbbf24 100%);
+        }
+
+        /* ========== SEÇÕES ========== */
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+
+        .section-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ========== TABELAS ========== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: var(--gray-lighter);
+        }
+
+        /* ========== BADGES ========== */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* ========== BOTÕES ========== */
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: var(--gray-lighter);
+            transform: translateY(-2px);
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        /* ========== ALERTA SIMPLES ========== */
+        .alert {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            z-index: 10000;
+            max-width: 300px;
+        }
+
+        .alert-success {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .alert-error {
+            border-left: 4px solid var(--danger);
+        }
+
+        /* ========== RESPONSIVIDADE ========== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-sidebar span:first-child,
+            .nav-item span,
+            .user-details {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                position: fixed;
+                bottom: 0;
+                top: auto;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .sidebar-header {
+                display: none;
+            }
+            
+            .nav-menu {
+                flex-direction: row;
+                flex: 1;
+                padding: 0;
+                justify-content: space-around;
+            }
+            
+            .nav-item {
+                flex-direction: column;
+                padding: 10px 8px;
+                border-left: none;
+                border-top: 4px solid transparent;
+                gap: 6px;
+                font-size: 0.8rem;
+            }
+            
+            .nav-item.active {
+                border-top-color: var(--secondary);
+            }
+            
+            .nav-item i {
+                font-size: 1.2rem;
+            }
+            
+            .sidebar-footer {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                margin-bottom: 70px;
+            }
+            
+            .top-bar {
+                height: 64px;
+                padding: 0 20px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 0 16px;
+                height: 60px;
+            }
+            
+            .page-title {
+                font-size: 1.1rem;
+            }
+            
+            .logout-btn span {
+                display: none;
+            }
+            
+            .logout-btn {
+                padding: 10px;
+            }
+            
+            .content-area {
+                padding: 16px;
+            }
+            
+            .section {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="claro">
+    <!-- Container Principal -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo-sidebar">
+                    <span>CONTRATO</span>
+                    <span>+</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="contratos.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Contratos</span>
+                </a>
+                <a href="notificacoes.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notificações</span>
+                </a>
+               
+                <a href="configuracoes.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard CONTRATO+</span>
+                </div>
+                
+                <div class="top-bar-actions">
+                    <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Bem-vindo -->
+                <div class="section">
+                    <h2 style="margin-bottom: 10px;">Bem-vindo ao CONTRATO+</h2>
+                    <p style="color: var(--text-light);">Sistema privado de gerenciamento de contratos</p>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="valueTotalContratos">12</div>
+                            <div class="stat-label">Total de Contratos</div>
+                            <div class="stat-desc">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Todos os contratos do sistema</span>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar primary" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="valueContratosAtivos">8</div>
+                            <div class="stat-label">Contratos Ativos</div>
+                            <div class="stat-desc">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Em andamento no momento</span>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar success" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="valueContratosVencendo">2</div>
+                            <div class="stat-label">Próximos Vencimentos</div>
+                            <div class="stat-desc">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Nos próximos 7 dias</span>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar warning" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contratos Recentes -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-history"></i>
+                            <span>Contratos Recentes</span>
+                        </div>
+                        <div class="section-actions">
+                            <a href="contratos.html" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i>
+                                Novo Contrato
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome do Contrato</th>
+                                    <th>Data Início</th>
+                                    <th>Data Fim</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contratosTableBody">
+                                <tr>
+                                    <td>Contrato de Serviços TI</td>
+                                    <td>01/01/2024</td>
+                                    <td>31/12/2024</td>
+                                    <td><span class="badge badge-success">Ativo</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Contrato de Consultoria</td>
+                                    <td>15/03/2024</td>
+                                    <td>14/03/2025</td>
+                                    <td><span class="badge badge-success">Ativo</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Contrato de Locação</td>
+                                    <td>01/02/2024</td>
+                                    <td>31/01/2025</td>
+                                    <td><span class="badge badge-warning">Pendente</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Contrato de Manutenção</td>
+                                    <td>10/12/2023</td>
+                                    <td>09/12/2024</td>
+                                    <td><span class="badge badge-danger">Vencido</span></td>
+                                    <td>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Sistema Privado -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Sistema Privado</span>
+                        </div>
+                    </div>
+                    <div class="alert alert-info" style="background: rgba(11, 22, 51, 0.05); padding: 20px; border-radius: var(--radius-sm);">
+                        <p><strong>Informações do sistema:</strong></p>
+                        <ul style="margin-top: 10px; margin-left: 20px; color: var(--text-light);">
+                            <li>Sistema privado de gerenciamento de contratos</li>
+                            <li>Acesso restrito apenas com senha de administrador</li>
+                            <li>Nenhum cadastro ou login por email necessário</li>
+                            <li>Dados armazenados localmente</li>
+                            <li>Versão 1.0 - 2026</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerta -->
+    <div class="alert" id="alertMessage"></div>
+
+  <script>
+  let refreshTimer = null;
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    // checa sessão
+    const ok = await checkSession();
+    if (!ok) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    carregarTema();
+    inicializarEventos();
+
+    await refreshDashboard();
+    refreshTimer = setInterval(refreshDashboard, 5000);
+  });
+
+  async function checkSession() {
+    try {
+      const res = await fetch("/api/auth/check", { credentials: "include" });
+      const data = await res.json();
+      return !!(data && data.authenticated);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function carregarTema() {
+    const savedTheme = localStorage.getItem("contrato-mais-theme") || "claro";
+    document.body.dataset.theme = savedTheme;
+    const themeIcon = document.querySelector("#themeToggle i");
+    if (themeIcon) themeIcon.className = savedTheme === "claro" ? "fas fa-moon" : "fas fa-sun";
+  }
+
+  function alternarTema() {
+    const currentTheme = document.body.dataset.theme;
+    const newTheme = currentTheme === "claro" ? "escuro" : "claro";
+    document.body.dataset.theme = newTheme;
+    localStorage.setItem("contrato-mais-theme", newTheme);
+
+    const themeIcon = document.querySelector("#themeToggle i");
+    if (themeIcon) themeIcon.className = newTheme === "claro" ? "fas fa-moon" : "fas fa-sun";
+  }
+
+  async function fazerLogout() {
+    if (!confirm("Deseja realmente sair do sistema?")) return;
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    } catch (e) {}
+    window.location.href = "index.html";
+  }
+
+  function inicializarEventos() {
+    document.getElementById("themeToggle")?.addEventListener("click", alternarTema);
+    document.getElementById("logoutBtn")?.addEventListener("click", fazerLogout);
+  }
+
+  function badgeStatus(status) {
+    const s = (status || "").toLowerCase();
+    if (s === "ativo") return `<span class="badge badge-success">Ativo</span>`;
+    if (s === "pendente") return `<span class="badge badge-warning">Pendente</span>`;
+    if (s === "inativo") return `<span class="badge badge-danger">Inativo</span>`;
+    if (s === "concluido") return `<span class="badge badge-info">Concluído</span>`;
+    return `<span class="badge badge-info">${status}</span>`;
+  }
+
+  function formatDateBR(dt) {
+    if (!dt) return "-";
+    const d = new Date(dt);
+    if (isNaN(d.getTime())) return String(dt);
+    return d.toLocaleDateString("pt-BR");
+  }
+
+  async function refreshDashboard() {
+    try {
+      const res = await fetch("/api/dashboard/stats", { credentials: "include" });
+      if (res.status === 401) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      const data = await res.json();
+      if (!data.success) return;
+
+      const st = data.stats;
+
+      document.getElementById("valueTotalContratos").textContent = st.total_contratos ?? 0;
+      document.getElementById("valueContratosAtivos").textContent = st.contratos_ativos ?? 0;
+      document.getElementById("valueContratosVencendo").textContent = st.contratos_vencendo_7dias ?? 0;
+
+      const body = document.getElementById("contratosTableBody");
+      if (body) {
+        const recent = (st.contratos_recentes || []).slice(0, 5);
+        body.innerHTML = recent.map(c => `
+          <tr>
+            <td>${escapeHtml(c.nome)}</td>
+            <td>${formatDateBR(c.data_inicio)}</td>
+            <td>${formatDateBR(c.data_fim)}</td>
+            <td>${badgeStatus(c.status)}</td>
+            <td>
+              <a class="btn btn-outline btn-sm" href="contratos.html" title="Ver no Gerenciamento">
+                <i class="fas fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+        `).join("");
+
+        if (recent.length === 0) {
+          body.innerHTML = `
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <i class="fas fa-file-contract"></i>
+                  <h3>Nenhum contrato encontrado</h3>
+                  <p>Crie um contrato em "Contratos" para aparecer aqui.</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+      }
+    } catch (e) {
+      // se quiser, pode mostrar alerta aqui
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+</script>
+
+
+</body>
+</html>
