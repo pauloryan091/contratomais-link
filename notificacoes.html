@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="claro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CONTRATO+ | Notificações</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0b1633;
+      --primary-dark: #070f22;
+      --secondary: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+
+      --dark: #1f2937;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --gray-light: #e5e7eb;
+      --border: #d1d5db;
+
+      --sidebar-bg: #1e293b;
+      --card-bg: white;
+      --text: var(--dark);
+      --text-light: var(--gray);
+
+      --radius: 12px;
+      --shadow: 0 10px 25px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    [data-theme="escuro"] {
+      --dark: #f9fafb;
+      --light: #111827;
+      --gray-light: #374151;
+      --border: #4b5563;
+      --card-bg: #1f2937;
+      --sidebar-bg: #111827;
+      --text: #f3f4f6;
+      --text-light: #d1d5db;
+      --shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      transition: var(--transition);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== LAYOUT BASE ===== */
+    .app-container { display: flex; min-height: 100vh; position: relative; }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 250px;
+      background: var(--sidebar-bg);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 1000;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .logo-sidebar {
+      padding: 24px 20px;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .logo-sidebar span:last-child { color: var(--secondary); font-size: 2rem; }
+
+    .nav-menu {
+      flex: 1;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      transition: var(--transition);
+      border-left: 4px solid transparent;
+      gap: 12px;
+      min-height: 52px;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; padding-left: 24px; }
+
+    .nav-item.active {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-left-color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .nav-item i { font-size: 1.2rem; width: 24px; text-align: center; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      margin-left: 250px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      height: 72px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .page-title span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60vw;
+    }
+
+    .page-title i { color: var(--primary); }
+
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex: 0 0 auto;
+    }
+
+    .theme-toggle:hover { background: var(--gray-light); transform: translateY(-2px); }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .logout-btn:hover { background: #dc2626; transform: translateY(-2px); }
+
+    /* ===== CONTENT ===== */
+    .content-area {
+      padding: 30px;
+      flex: 1;
+      background: var(--light);
+      min-width: 0;
+    }
+
+    /* ===== ALERT (TOAST) ===== */
+    .alert {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 10000;
+      max-width: 360px;
+      width: calc(100vw - 40px);
+      animation: slideIn 0.25s ease;
+      word-break: break-word;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .alert-success { border-left: 4px solid var(--secondary); }
+    .alert-error { border-left: 4px solid var(--danger); }
+    .alert-warning { border-left: 4px solid var(--warning); }
+    .alert-info { border-left: 4px solid var(--info); }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 25px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      min-width: 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .section-title span{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 60vw;
+    }
+
+    /* ===== FORM ===== */
+    .form-group { margin-bottom: 16px; }
+
+    .form-label {
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text);
+      transition: var(--transition);
+      min-height: 46px;
+    }
+
+    .form-control:focus { outline: none; border-color: var(--primary); }
+
+    .form-text {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      user-select: none;
+      min-height: 46px;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn-success { background: var(--secondary); color: white; }
+    .btn-success:hover { background: #0da271; transform: translateY(-2px); }
+    .btn-secondary { background: var(--gray-light); color: var(--text); }
+    .btn-secondary:hover { background: var(--border); transform: translateY(-2px); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+    .btn-sm { padding: 10px 14px; font-size: 0.9rem; min-height: 40px; }
+
+    /* ===== STATUS ===== */
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+    .status-online { background: rgba(16, 185, 129, 0.1); color: #065f46; }
+    .status-online .status-dot { background: var(--secondary); }
+
+    /* ===== LIST ===== */
+    .notifications-list { margin-top: 10px; }
+
+    .notification-item {
+      background: var(--gray-light);
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--secondary);
+      transition: var(--transition);
+      overflow-wrap: anywhere;
+    }
+
+    .notification-item:hover { transform: translateX(5px); }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .notification-title {
+      font-weight: 900;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .notification-title span{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width: 65vw;
+    }
+
+    .notification-time {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.05);
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .notification-body { color: var(--text); opacity: 0.85; font-size: 0.95rem; line-height: 1.5; }
+
+    .footer {
+      text-align: center;
+      color: var(--text-light);
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ==========================================================
+       RESPONSIVIDADE (COMPLETA)
+       ========================================================== */
+
+    /* Tablets e telas médias: sidebar compacta */
+    @media (max-width: 1024px) {
+      .sidebar { width: 80px; }
+      .logo-sidebar span:first-child, .nav-item span { display: none; }
+      .main-content { margin-left: 80px; }
+      .nav-item { justify-content: center; padding: 14px 0; }
+      .nav-item:hover { padding-left: 0; }
+    }
+
+    /* Mobile: sidebar vira bottom nav */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .logo-sidebar { display: none; }
+
+      .nav-menu {
+        flex-direction: row;
+        flex: 1;
+        padding: 0;
+        justify-content: space-around;
+      }
+
+      .nav-item {
+        flex-direction: column;
+        padding: 10px 8px;
+        border-left: none;
+        border-top: 4px solid transparent;
+        gap: 6px;
+        font-size: 0.8rem;
+        min-height: 70px;
+      }
+
+      .nav-item.active { border-top-color: var(--secondary); }
+
+      .main-content { margin-left: 0; margin-bottom: 70px; }
+
+      .top-bar {
+        height: auto;
+        min-height: 64px;
+        padding: 10px 14px;
+        flex-wrap: wrap;
+      }
+
+      .page-title { font-size: 1.1rem; }
+      .page-title span { max-width: 75vw; }
+
+      .content-area { padding: 16px; }
+
+      /* Botões viram coluna no celular */
+      .actions-responsive {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      .actions-responsive button { width: 100% !important; }
+
+      /* Toast central no mobile */
+      .alert{
+        top: 78px;
+        right: 50%;
+        transform: translateX(50%);
+        max-width: 520px;
+      }
+    }
+
+    /* Celulares pequenos (ex: 360px) */
+    @media (max-width: 420px) {
+      .content-area { padding: 12px; }
+      .section { padding: 16px; }
+      .page-title { font-size: 1rem; }
+      .logout-btn span { display: none; }
+      .logout-btn { padding: 10px 12px; }
+      .theme-toggle { width: 38px; height: 38px; }
+      .notification-time { font-size: 0.8rem; }
+    }
+
+    /* Telas muito grandes: melhora leitura */
+    @media (min-width: 1400px) {
+      .content-area { max-width: 1200px; margin: 0 auto; }
+    }
+  </style>
+</head>
+
+<body data-theme="claro">
+  <div class="alert" id="alertMessage"></div>
+
+  <div class="app-container">
+    <div class="sidebar">
+      <div class="logo-sidebar">
+        <span>CONTRATO</span><span>+</span>
+      </div>
+      <div class="nav-menu">
+        <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+        <a href="contratos.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Contratos</span></a>
+        <a href="notificacoes.html" class="nav-item active"><i class="fas fa-bell"></i><span>Notificações</span></a>
+        <a href="configuracoes.html" class="nav-item"><i class="fas fa-cog"></i><span>Configurações</span></a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="top-bar">
+        <div class="page-title">
+          <i class="fas fa-bell"></i><span>Sistema de Notificações</span>
+        </div>
+        <div class="top-bar-actions">
+          <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button id="logoutBtn" class="logout-btn" onclick="fazerLogout()">
+            <i class="fas fa-sign-out-alt"></i><span>Sair</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+
+        <!-- ENVIO / SIMULAÇÃO -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="fas fa-envelope"></i>
+              <span>Enviar Notificação</span>
+            </div>
+            <div id="emailStatus" class="status-indicator status-online">
+              <span class="status-dot"></span>
+              <span id="statusText">Sistema Online</span>
+            </div>
+          </div>
+
+          <!-- Busca contrato -->
+          <div class="form-group">
+            <label class="form-label" for="contratoBusca">
+              <i class="fas fa-file-contract"></i> Buscar contrato (nome ou iniciais)
+            </label>
+            <input id="contratoBusca" class="form-control" placeholder="Ex: 'forn', 'alug', 'CT-2026'..." autocomplete="off"/>
+            <div class="form-text">Digite para filtrar. Clique em um contrato na lista abaixo.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-list"></i> Contratos encontrados</label>
+            <select id="contratoSelect" class="form-control">
+              <option value="">Carregando...</option>
+            </select>
+            <div class="form-text" id="contratoHint">Selecione um contrato.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="emailDestino"><i class="fas fa-at"></i> Email destino</label>
+            <input id="emailDestino" type="text" class="form-control" placeholder="ex: cliente@gmail.com, financeiro@empresa.com"/>
+            <div class="form-text">Você pode colocar vários emails separados por vírgula.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tipoNotificacao"><i class="fas fa-bell"></i> Tipo</label>
+            <select id="tipoNotificacao" class="form-control">
+              <option value="lembrete_mensal">Lembrete - 30 dias</option>
+              <option value="lembrete_semanal">Lembrete - 7 dias</option>
+              <option value="lembrete_diario">Lembrete - 1 dia</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="assunto"><i class="fas fa-heading"></i> Assunto</label>
+            <input id="assunto" class="form-control" placeholder="Notificação de Contrato - CONTRATO+" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="mensagemCustom"><i class="fas fa-pen"></i> Mensagem (opcional)</label>
+            <textarea id="mensagemCustom" class="form-control" rows="4" placeholder="Se quiser, escreva uma mensagem customizada..."></textarea>
+          </div>
+
+          <div class="actions-responsive" style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 6px;">
+            <button class="btn btn-secondary" onclick="simularEnvio()" style="flex:1; min-width: 220px;">
+              <i class="fas fa-eye"></i> Simular envio (preview)
+            </button>
+            <button class="btn btn-success" onclick="enviarGmail()" style="flex:1; min-width: 220px;">
+              <i class="fas fa-paper-plane"></i> Enviar Gmail (real)
+            </button>
+            <button class="btn btn-primary" onclick="carregarHistoricoServidor(true)" style="flex:1; min-width: 220px;">
+              <i class="fas fa-history"></i> Ver histórico (backend)
+            </button>
+          </div>
+        </div>
+
+        <!-- HISTÓRICO LOCAL (SIMULAÇÕES) -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="fas fa-clock"></i>
+              <span>Histórico (simulações locais)</span>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="limparHistoricoLocal()">
+              <i class="fas fa-trash"></i> Limpar
+            </button>
+          </div>
+
+          <div class="notifications-list" id="historicoLocal"></div>
+          <div style="text-align:center; color: var(--text-light); margin-top: 10px;">
+            <p id="lastUpdate">Última atualização: --:--:--</p>
+          </div>
+        </div>
+
+        <!-- HISTÓRICO SERVIDOR -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="fas fa-database"></i>
+              <span>Histórico (backend /api/notificacoes)</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="carregarHistoricoServidor(true)">
+              <i class="fas fa-rotate"></i> Atualizar
+            </button>
+          </div>
+
+          <div class="notifications-list" id="historicoServidor"></div>
+        </div>
+
+        <div class="footer">
+          <p>CONTRATO+ v1.0.0 | Notificações</p>
+          <p>© 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ====== STATE ======
+  let contratos = [];
+  const LS_KEY = "contrato-mais-simulacoes";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const ok = await checkSession();
+    if (!ok) { window.location.href = "index.html"; return; }
+
+    aplicarTema();
+    await carregarContratos();
+    setupBuscaContrato();
+
+    // defaults
+    document.getElementById("assunto").value = "Notificação de Contrato - CONTRATO+";
+
+    renderHistoricoLocal();
+    await carregarHistoricoServidor(false);
+
+    setInterval(() => {
+      document.getElementById("lastUpdate").textContent =
+        "Última atualização: " + new Date().toLocaleString("pt-BR");
+    }, 1000);
+  });
+
+  // ===== AUTH =====
+  async function checkSession() {
+    try {
+      const res = await fetch("/api/auth/check", { credentials: "include" });
+      const data = await res.json();
+      return !!(data && data.authenticated);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ===== THEME =====
+  function aplicarTema() {
+    const saved = localStorage.getItem("contrato-mais-theme") || "claro";
+    document.body.dataset.theme = saved;
+    const icon = document.querySelector("#themeToggle i");
+    if (icon) icon.className = (saved === "claro") ? "fas fa-moon" : "fas fa-sun";
+  }
+
+  function toggleTheme() {
+    const cur = document.body.dataset.theme || "claro";
+    const next = (cur === "claro") ? "escuro" : "claro";
+    document.body.dataset.theme = next;
+    localStorage.setItem("contrato-mais-theme", next);
+    aplicarTema();
+  }
+
+  // ===== LOGOUT =====
+  async function fazerLogout() {
+    if (!confirm("Deseja realmente sair do sistema?")) return;
+    try { await fetch("/api/auth/logout", { method: "POST", credentials: "include" }); } catch(e){}
+    window.location.href = "index.html";
+  }
+
+  // ===== CONTRATOS =====
+  async function carregarContratos() {
+    const sel = document.getElementById("contratoSelect");
+    sel.innerHTML = `<option value="">Carregando...</option>`;
+
+    try {
+      const res = await fetch("/api/contratos", { credentials: "include" });
+      if (res.status === 401) { window.location.href = "index.html"; return; }
+      const data = await res.json().catch(()=>({}));
+
+      if (!data.success) {
+        sel.innerHTML = `<option value="">Erro ao carregar contratos</option>`;
+        return;
+      }
+
+      contratos = data.contratos || [];
+      renderContratoOptions(contratos);
+    } catch (e) {
+      sel.innerHTML = `<option value="">Falha ao carregar contratos</option>`;
+    }
+  }
+
+  function renderContratoOptions(lista) {
+    const sel = document.getElementById("contratoSelect");
+    if (!sel) return;
+
+    if (!lista.length) {
+      sel.innerHTML = `<option value="">Nenhum contrato cadastrado</option>`;
+      return;
+    }
+
+    sel.innerHTML = `<option value="">Selecione um contrato</option>` + lista.map(c => {
+      const nome = escapeHtml(c.nome || "");
+      return `<option value="${c.id}">${nome}</option>`;
+    }).join("");
+
+    document.getElementById("contratoHint").textContent =
+      `Total: ${lista.length} contrato(s).`;
+  }
+
+  function setupBuscaContrato() {
+    const input = document.getElementById("contratoBusca");
+    const sel = document.getElementById("contratoSelect");
+
+    input.addEventListener("input", () => {
+      const q = (input.value || "").trim().toLowerCase();
+      if (!q) {
+        renderContratoOptions(contratos);
+        return;
+      }
+
+      const filtrados = contratos.filter(c => {
+        const nome = (c.nome || "").toLowerCase();
+        const iniciais = (c.nome || "")
+          .split(/\s+/)
+          .filter(Boolean)
+          .map(w => w[0]?.toLowerCase() || "")
+          .join("");
+
+        return nome.includes(q) || iniciais.includes(q);
+      });
+
+      renderContratoOptions(filtrados);
+    });
+
+    sel.addEventListener("change", () => {
+      const id = sel.value;
+      const contrato = contratos.find(c => String(c.id) === String(id));
+      if (contrato) {
+        document.getElementById("contratoHint").textContent =
+          `Selecionado: ${contrato.nome} (vence em ${formatDateBR(contrato.data_fim)})`;
+      }
+    });
+  }
+
+  function getContratoSelecionado() {
+    const id = document.getElementById("contratoSelect").value;
+    if (!id) return null;
+    return contratos.find(c => String(c.id) === String(id)) || null;
+  }
+
+  // ===== ACTIONS =====
+  function simularEnvio() {
+    const contrato = getContratoSelecionado();
+    if (!contrato) return showAlert("Selecione um contrato.", "error");
+
+    const emails = parseEmails(document.getElementById("emailDestino").value);
+    if (!emails.length) return showAlert("Informe pelo menos 1 email válido.", "error");
+
+    const tipo = document.getElementById("tipoNotificacao").value;
+    const assunto = (document.getElementById("assunto").value || "").trim() || "Notificação de Contrato - CONTRATO+";
+    const msg = (document.getElementById("mensagemCustom").value || "").trim();
+
+    const preview = montarMensagem(tipo, contrato, msg);
+
+    const item = {
+      id: cryptoRandomId(),
+      quando: new Date().toISOString(),
+      modo: "SIMULAÇÃO",
+      contrato_id: contrato.id,
+      contrato_nome: contrato.nome,
+      emails: emails.join(", "),
+      tipo,
+      assunto,
+      mensagem: preview
+    };
+
+    const hist = getHistoricoLocal();
+    hist.unshift(item);
+    setHistoricoLocal(hist);
+
+    renderHistoricoLocal();
+    showAlert("Simulação criada e salva no histórico local ✅", "success");
+  }
+
+  async function enviarGmail() {
+    const contrato = getContratoSelecionado();
+    if (!contrato) return showAlert("Selecione um contrato.", "error");
+
+    const emails = parseEmails(document.getElementById("emailDestino").value);
+    if (!emails.length) return showAlert("Informe pelo menos 1 email válido.", "error");
+
+    const tipo = document.getElementById("tipoNotificacao").value;
+    const assunto = (document.getElementById("assunto").value || "").trim() || "Notificação de Contrato - CONTRATO+";
+    const msgCustom = (document.getElementById("mensagemCustom").value || "").trim();
+
+    const payload = {
+      emails: emails.join(","),
+      tipo: tipo === "custom" ? "lembrete_mensal" : tipo,
+      assunto,
+      mensagem_customizada: msgCustom || undefined
+    };
+
+    try {
+      const res = await fetch(`/api/contratos/${contrato.id}/notificar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json().catch(()=>({}));
+
+      if (!res.ok || !data.success) {
+        return showAlert(data.message || "Erro ao enviar email.", "error");
+      }
+
+      showAlert(`Email enviado ✅ (${data.enviados || 1} destinatário(s))`, "success");
+      await carregarHistoricoServidor(true);
+    } catch (e) {
+      showAlert("Falha ao conectar no servidor.", "error");
+    }
+  }
+
+  async function carregarHistoricoServidor(showToast) {
+    const box = document.getElementById("historicoServidor");
+    box.innerHTML = `<div class="notification-item"><div class="notification-body">Carregando...</div></div>`;
+
+    try {
+      const res = await fetch("/api/notificacoes", { credentials: "include" });
+      if (res.status === 401) { window.location.href = "index.html"; return; }
+
+      const data = await res.json().catch(()=>({}));
+      if (!data.success) {
+        box.innerHTML = `<div class="notification-item"><div class="notification-body">Não foi possível carregar.</div></div>`;
+        return;
+      }
+
+      const lista = data.notificacoes || [];
+      renderHistoricoServidor(lista);
+
+      if (showToast) showAlert("Histórico do backend atualizado ✅", "success");
+    } catch (e) {
+      box.innerHTML = `<div class="notification-item"><div class="notification-body">Falha ao carregar histórico.</div></div>`;
+    }
+  }
+
+  function limparHistoricoLocal() {
+    if (!confirm("Deseja limpar o histórico local de simulações?")) return;
+    localStorage.removeItem(LS_KEY);
+    renderHistoricoLocal();
+    showAlert("Histórico local limpo ✅", "success");
+  }
+
+  // ===== RENDER HISTORY =====
+  function renderHistoricoLocal() {
+    const box = document.getElementById("historicoLocal");
+    const hist = getHistoricoLocal();
+
+    if (!hist.length) {
+      box.innerHTML = `<div class="notification-item"><div class="notification-body">Nenhuma simulação ainda.</div></div>`;
+      return;
+    }
+
+    box.innerHTML = hist.slice(0, 20).map(h => `
+      <div class="notification-item">
+        <div class="notification-header">
+          <div class="notification-title">
+            <i class="fas fa-eye"></i> <span>${escapeHtml(h.contrato_nome)}</span> <span style="opacity:.7">(${escapeHtml(h.modo)})</span>
+          </div>
+          <div class="notification-time">${new Date(h.quando).toLocaleString("pt-BR")}</div>
+        </div>
+        <div class="notification-body">
+          <div><strong>Para:</strong> ${escapeHtml(h.emails)}</div>
+          <div><strong>Tipo:</strong> ${escapeHtml(h.tipo)}</div>
+          <div><strong>Assunto:</strong> ${escapeHtml(h.assunto)}</div>
+          <div style="margin-top:8px; opacity:.9">${h.mensagem}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderHistoricoServidor(lista) {
+    const box = document.getElementById("historicoServidor");
+    if (!lista.length) {
+      box.innerHTML = `<div class="notification-item"><div class="notification-body">Nenhuma notificação registrada no backend.</div></div>`;
+      return;
+    }
+
+    box.innerHTML = lista.slice(0, 30).map(n => {
+      const when = n.data_envio || n.criado_em;
+      const icon = (String(n.status || "").toLowerCase() === "enviado") ? "fa-check" :
+                   (String(n.status || "").toLowerCase() === "erro") ? "fa-triangle-exclamation" : "fa-clock";
+      return `
+        <div class="notification-item" style="border-left-color:${statusColor(n.status)}">
+          <div class="notification-header">
+            <div class="notification-title">
+              <i class="fas ${icon}"></i> <span>${escapeHtml(n.contrato_nome || "-")}</span>
+              <span style="opacity:.7">(${escapeHtml(n.status || "-")})</span>
+            </div>
+            <div class="notification-time">${formatDateTimeBR(when)}</div>
+          </div>
+          <div class="notification-body">
+            <div><strong>Para:</strong> ${escapeHtml(n.email_destino || "-")}</div>
+            <div><strong>Tipo:</strong> ${escapeHtml(n.tipo || "-")}</div>
+            <div><strong>Assunto:</strong> ${escapeHtml(n.assunto || "-")}</div>
+            <div style="margin-top:8px; opacity:.9">${escapeHtml(n.mensagem || "")}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // ===== MESSAGE =====
+  function montarMensagem(tipo, contrato, msgCustom) {
+    const base = msgCustom ? escapeHtml(msgCustom) : (() => {
+      if (tipo === "lembrete_diario") return `⚠️ O contrato <strong>${escapeHtml(contrato.nome)}</strong> está prestes a vencer!`;
+      if (tipo === "lembrete_semanal") return `📅 O contrato <strong>${escapeHtml(contrato.nome)}</strong> vencerá em 7 dias.`;
+      return `📋 Lembrete: o contrato <strong>${escapeHtml(contrato.nome)}</strong> vencerá em 30 dias.`;
+    })();
+
+    return `
+      <div>
+        ${base}<br/>
+        <small style="opacity:.85">
+          <strong>Vencimento:</strong> ${formatDateBR(contrato.data_fim)} •
+          <strong>Status:</strong> ${escapeHtml(contrato.status || "ativo")}
+        </small>
+      </div>
+    `;
+  }
+
+  // ===== HELPERS =====
+  function parseEmails(str) {
+    const raw = (str || "").split(",").map(s => s.trim()).filter(Boolean);
+    return raw.filter(e => e.includes("@") && e.includes("."));
+  }
+
+  function statusColor(status) {
+    const s = String(status || "").toLowerCase();
+    if (s === "enviado") return "var(--secondary)";
+    if (s === "erro") return "var(--danger)";
+    return "var(--warning)";
+  }
+
+  function showAlert(msg, type="info") {
+    const el = document.getElementById("alertMessage");
+    el.className = "alert";
+    el.classList.add(`alert-${type}`);
+    el.innerHTML = escapeHtml(msg);
+    el.style.display = "block";
+    setTimeout(() => { el.style.display = "none"; }, 3500);
+  }
+
+  function getHistoricoLocal() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch(e) { return []; }
+  }
+  function setHistoricoLocal(arr) {
+    localStorage.setItem(LS_KEY, JSON.stringify(arr || []));
+  }
+
+  function formatDateTimeBR(dt) {
+    if (!dt) return "-";
+    const d = new Date(dt);
+    if (isNaN(d.getTime())) return String(dt);
+    return d.toLocaleString("pt-BR");
+  }
+  function formatDateBR(dt) {
+    if (!dt) return "-";
+    const d = new Date(dt);
+    if (isNaN(d.getTime())) return String(dt);
+    return d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function cryptoRandomId() {
+    try {
+      return [...crypto.getRandomValues(new Uint8Array(16))]
+        .map(b => b.toString(16).padStart(2, "0")).join("");
+    } catch (e) {
+      return String(Date.now()) + "_" + Math.random().toString(16).slice(2);
+    }
+  }
+</script>
+
+</body>
+</html>

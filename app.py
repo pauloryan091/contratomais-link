@@ -37,8 +37,8 @@ app.config["SESSION_COOKIE_NAME"] = "contrato_mais_session"
 app.config["SESSION_COOKIE_SECURE"] = False
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=1)
-app.config["SESSION_REFRESH_EACH_REQUEST"] = True
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=5)
+app.config["SESSION_REFRESH_EACH_REQUEST"] = False
 
 EMAIL_CONFIG = {
     "smtp_server": "smtp.gmail.com",
@@ -391,7 +391,10 @@ def admin_login():
 @app.route("/api/auth/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
-    return jsonify({"success": True, "message": "Logout realizado com sucesso"})
+    resp = jsonify({"success": True, "message": "Logout realizado com sucesso"})
+    # garante remoção do cookie de sessão (melhora consistência em mobile)
+    resp.delete_cookie(app.config["SESSION_COOKIE_NAME"])
+    return resp
 
 
 @app.route("/api/auth/check", methods=["GET"])

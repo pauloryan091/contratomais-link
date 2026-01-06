@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="claro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTRATO+ | Configurações</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ======= (SEU CSS ORIGINAL - mantido) ======= */
+    :root {
+      --primary: #0b1633;
+      --primary-dark: #070f22;
+      --primary-light: #0f1d45;
+      --secondary: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --dark: #1f2937;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --gray-light: #e5e7eb;
+      --border: #d1d5db;
+      --sidebar-bg: #1e293b;
+      --card-bg: white;
+      --text: var(--dark);
+      --text-light: var(--gray);
+      --radius: 12px;
+      --shadow: 0 10px 25px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+    [data-theme="escuro"] {
+      --dark: #f9fafb;
+      --light: #111827;
+      --gray-light: #374151;
+      --border: #4b5563;
+      --card-bg: #1f2937;
+      --sidebar-bg: #111827;
+      --text: #f3f4f6;
+      --text-light: #d1d5db;
+      --shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:var(--light);
+      color:var(--text);
+      transition:var(--transition);
+      line-height:1.5;
+      min-height:100vh
+    }
+    .app-container{display:flex;min-height:100vh}
+    .sidebar{
+      width:250px;background:var(--sidebar-bg);color:#fff;display:flex;flex-direction:column;
+      position:fixed;height:100vh;z-index:1000
+    }
+    .logo-sidebar{
+      padding:24px 20px;font-size:1.8rem;font-weight:800;color:#fff;display:flex;align-items:center;
+      gap:8px;border-bottom:1px solid rgba(255,255,255,.1)
+    }
+    .logo-sidebar span:last-child{color:var(--secondary);font-size:2rem}
+    .nav-menu{flex:1;padding:20px 0;display:flex;flex-direction:column;gap:5px}
+    .nav-item{
+      display:flex;align-items:center;padding:14px 20px;color:rgba(255,255,255,.8);text-decoration:none;
+      transition:var(--transition);border-left:4px solid transparent;gap:12px
+    }
+    .nav-item:hover{background:rgba(255,255,255,.05);color:#fff;padding-left:24px}
+    .nav-item.active{background:rgba(255,255,255,.1);color:#fff;border-left-color:var(--secondary);font-weight:600}
+    .nav-item i{font-size:1.2rem;width:24px;text-align:center}
+
+    .main-content{flex:1;margin-left:250px;display:flex;flex-direction:column}
+    .top-bar{
+      height:72px;background:var(--card-bg);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:100
+    }
+    .page-title{font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:12px}
+    .page-title i{color:var(--primary)}
+    .top-bar-actions{display:flex;align-items:center;gap:16px}
+    .theme-toggle{
+      background:none;border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:10px;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition)
+    }
+    .theme-toggle:hover{background:var(--gray-light);transform:translateY(-2px)}
+    .logout-btn{
+      background:var(--danger);color:#fff;border:none;padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:600;
+      transition:var(--transition);display:flex;align-items:center;gap:8px
+    }
+    .logout-btn:hover{background:#dc2626;transform:translateY(-2px)}
+    .content-area{padding:30px;flex:1;background:var(--light)}
+    .alert{
+      position:fixed;top:100px;right:20px;padding:16px;border-radius:10px;background:var(--card-bg);
+      border:1px solid var(--border);box-shadow:var(--shadow);display:none;z-index:10000;max-width:360px;
+      animation:slideIn .25s ease
+    }
+    @keyframes slideIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+    .alert-success{border-left:4px solid var(--secondary)}
+    .alert-error{border-left:4px solid var(--danger)}
+    .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:25px;margin-bottom:30px}
+    .settings-card{
+      background:var(--card-bg);border-radius:var(--radius);padding:25px;border:1px solid var(--border);
+      transition:var(--transition)
+    }
+    .settings-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+    .settings-header{display:flex;align-items:center;margin-bottom:25px;padding-bottom:15px;border-bottom:2px solid var(--border)}
+    .settings-header i{font-size:1.5rem;color:var(--primary);margin-right:15px}
+    .settings-title{font-size:1.3rem;font-weight:600}
+    .settings-subtitle{color:var(--text-light);font-size:.9rem;margin-top:5px}
+    .btn{
+      padding:12px 20px;border-radius:8px;font-weight:600;cursor:pointer;transition:var(--transition);
+      border:none;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;gap:8px
+    }
+    .btn-secondary{background:var(--gray-light);color:var(--text)}
+    .btn-secondary:hover{background:var(--border);transform:translateY(-2px)}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-danger:hover{background:#dc2626;transform:translateY(-2px)}
+    .theme-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:10px 0 20px}
+    .theme-option{
+      padding:20px;border:2px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;
+      transition:var(--transition);display:flex;flex-direction:column;align-items:center;gap:10px
+    }
+    .theme-option:hover{border-color:var(--primary);transform:translateY(-2px)}
+    .theme-option.active{border-color:var(--primary);background:rgba(11,22,51,.1)}
+    .theme-option i{font-size:2rem}
+    .system-info{margin-top:20px;background:var(--gray-light);padding:15px;border-radius:8px}
+    .info-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+    .info-item:last-child{border-bottom:none}
+    .info-label{color:var(--text-light);font-weight:500}
+    .info-value{color:var(--text);font-weight:600}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin-top:20px}
+    .stat-card{
+      background:var(--gray-light);padding:15px;border-radius:var(--radius);text-align:center;
+      border:1px solid var(--border);transition:var(--transition)
+    }
+    .stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+    .stat-value{font-size:1.8rem;font-weight:700;color:var(--primary);margin:8px 0}
+    .stat-label{color:var(--text-light);font-size:.85rem}
+    .danger-zone{border:2px solid var(--danger);background:rgba(239,68,68,.05)}
+    .danger-zone .settings-header{border-bottom-color:var(--danger)}
+    .danger-zone .settings-header i{color:var(--danger)}
+    .form-control{
+      width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:8px;font-size:1rem;
+      background:var(--card-bg);color:var(--text);transition:var(--transition)
+    }
+    .form-control:focus{outline:none;border-color:var(--primary)}
+    .secret-input{font-family:monospace;letter-spacing:2px;text-align:center;font-size:1.2rem}
+    .form-label{display:block;margin-bottom:8px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+    .form-group{margin-bottom:20px}
+    .form-hint{color:var(--text-light);font-size:.85rem;margin-top:5px;display:block}
+    .btn-group{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+    @media (max-width:1024px){
+      .sidebar{width:80px}
+      .logo-sidebar span:first-child,.nav-item span{display:none}
+      .main-content{margin-left:80px}
+      .settings-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:768px){
+      .sidebar{width:100%;height:70px;flex-direction:row;position:fixed;bottom:0;top:auto;border-top:1px solid rgba(255,255,255,.1)}
+      .logo-sidebar{display:none}
+      .nav-menu{flex-direction:row;flex:1;padding:0;justify-content:space-around}
+      .nav-item{flex-direction:column;padding:10px 8px;border-left:none;border-top:4px solid transparent;gap:6px;font-size:.8rem}
+      .nav-item.active{border-top-color:var(--secondary)}
+      .main-content{margin-left:0;margin-bottom:70px}
+      .top-bar{height:64px;padding:0 20px}
+      .content-area{padding:20px}
+    }
+  </style>
+</head>
+
+<body data-theme="claro">
+  <div class="alert" id="alertMessage"></div>
+
+  <div class="app-container">
+    <div class="sidebar">
+      <div class="logo-sidebar"><span>CONTRATO</span><span>+</span></div>
+      <div class="nav-menu">
+        <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+        <a href="contratos.html" class="nav-item"><i class="fas fa-file-contract"></i><span>Contratos</span></a>
+        <a href="notificacoes.html" class="nav-item"><i class="fas fa-bell"></i><span>Notificações</span></a>
+        <a href="configuracoes.html" class="nav-item active"><i class="fas fa-cog"></i><span>Configurações</span></a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="top-bar">
+        <div class="page-title"><i class="fas fa-cog"></i><span>Configurações do Sistema</span></div>
+        <div class="top-bar-actions">
+          <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button id="logoutBtn" class="logout-btn" onclick="fazerLogout()">
+            <i class="fas fa-sign-out-alt"></i><span>Sair</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div class="settings-grid">
+
+          <!-- APARÊNCIA -->
+          <div class="settings-card">
+            <div class="settings-header">
+              <i class="fas fa-palette"></i>
+              <div>
+                <div class="settings-title">Aparência do Sistema</div>
+                <div class="settings-subtitle">Personalize a interface</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-paint-brush"></i> Tema da Interface</label>
+              <div class="theme-options">
+                <div class="theme-option" id="optClaro" data-theme="claro" onclick="selectTheme('claro')">
+                  <i class="fas fa-sun"></i><div class="theme-name">Claro</div>
+                </div>
+                <div class="theme-option" id="optEscuro" data-theme="escuro" onclick="selectTheme('escuro')">
+                  <i class="fas fa-moon"></i><div class="theme-name">Escuro</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="system-info">
+              <div class="info-item"><span class="info-label">Tema atual:</span><span class="info-value" id="currentTheme">--</span></div>
+              <div class="info-item"><span class="info-label">Versão do sistema:</span><span class="info-value">1.0.0</span></div>
+              <div class="info-item"><span class="info-label">Última atualização:</span><span class="info-value" id="lastUpdate">--:--:--</span></div>
+            </div>
+          </div>
+
+          <!-- INFO / STATS -->
+          <div class="settings-card">
+            <div class="settings-header">
+              <i class="fas fa-info-circle"></i>
+              <div>
+                <div class="settings-title">Informações do Sistema</div>
+                <div class="settings-subtitle">Status e estatísticas</div>
+              </div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card"><div class="stat-label">Contratos</div><div class="stat-value" id="totalContratos">0</div></div>
+              <div class="stat-card"><div class="stat-label">Ativos</div><div class="stat-value" id="contratosAtivos">0</div></div>
+              <div class="stat-card"><div class="stat-label">Notificações</div><div class="stat-value" id="totalNotificacoes">0</div></div>
+              <div class="stat-card"><div class="stat-label">Usuário</div><div class="stat-value" id="currentUser">-</div></div>
+            </div>
+
+            <div class="system-info">
+              <div class="info-item"><span class="info-label">Status do sistema:</span><span class="info-value" style="color: var(--secondary);">Operacional</span></div>
+              <div class="info-item"><span class="info-label">Armazenamento (local):</span><span class="info-value" id="storageUsed">0 KB</span></div>
+            </div>
+
+            <div class="btn-group">
+              <button onclick="atualizarDados()" class="btn btn-secondary"><i class="fas fa-redo"></i> Atualizar Dados</button>
+              <button onclick="exportarDados()" class="btn btn-secondary"><i class="fas fa-download"></i> Exportar Dados</button>
+            </div>
+          </div>
+
+          <!-- ZONA DE PERIGO (RESET TOTAL) -->
+          <div class="settings-card danger-zone">
+            <div class="settings-header">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div>
+                <div class="settings-title">Zona de Perigo</div>
+                <div class="settings-subtitle">Reset total do sistema (apaga banco, contratos e notificações)</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reset_code"><i class="fas fa-key"></i> Código de Reset</label>
+              <input type="password" id="reset_code" class="form-control secret-input"
+                     placeholder="Digite o código de 8 dígitos" maxlength="8" oninput="validarCodigo()">
+              
+            </div>
+
+            <div class="btn-group">
+              <button onclick="limparCacheLocal('simulacoes')" class="btn btn-danger" id="btnLimparNotificacoes" disabled>
+                <i class="fas fa-trash"></i> Limpar Histórico Local (Simulações)
+              </button>
+              <button onclick="limparCacheLocal('geral')" class="btn btn-danger" id="btnLimparContratos" disabled>
+                <i class="fas fa-broom"></i> Limpar Cache Local (Tema/LS)
+              </button>
+            </div>
+
+            <button onclick="resetarSistemaTotal()" class="btn btn-danger" id="btnResetarSistema" disabled style="margin-top: 10px; width: 100%;">
+              <i class="fas fa-bomb"></i> Resetar Sistema (TOTAL)
+            </button>
+          </div>
+
+        </div>
+
+        <div class="footer" style="text-align:center;color:var(--text-light);margin-top:30px;padding-top:20px;border-top:1px solid var(--border);">
+          <p>CONTRATO+ v1.0.0 | Sistema Privado de Gerenciamento</p>
+          <p>© 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const ok = await checkSession();
+    if (!ok) { window.location.href = "index.html"; return; }
+
+    aplicarTema();
+    await atualizarDados();
+
+    setInterval(() => {
+      document.getElementById("lastUpdate").textContent = new Date().toLocaleString("pt-BR");
+      document.getElementById("storageUsed").textContent = calcLocalStorageKB() + " KB";
+    }, 1000);
+  });
+
+  // ===== AUTH =====
+  async function checkSession() {
+    try {
+      const res = await fetch("/api/auth/check", { credentials: "include" });
+      const data = await res.json();
+      return !!(data && data.authenticated);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // ===== THEME =====
+  function aplicarTema() {
+    const saved = localStorage.getItem("contrato-mais-theme") || "claro";
+    document.body.dataset.theme = saved;
+
+    const icon = document.querySelector("#themeToggle i");
+    if (icon) icon.className = (saved === "claro") ? "fas fa-moon" : "fas fa-sun";
+
+    document.getElementById("currentTheme").textContent = (saved === "claro") ? "Claro" : "Escuro";
+
+    const optClaro = document.getElementById("optClaro");
+    const optEscuro = document.getElementById("optEscuro");
+    optClaro?.classList.toggle("active", saved === "claro");
+    optEscuro?.classList.toggle("active", saved === "escuro");
+  }
+
+  function toggleTheme() {
+    const cur = document.body.dataset.theme || "claro";
+    const next = (cur === "claro") ? "escuro" : "claro";
+    localStorage.setItem("contrato-mais-theme", next);
+    aplicarTema();
+  }
+
+  function selectTheme(theme) {
+    localStorage.setItem("contrato-mais-theme", theme);
+    aplicarTema();
+  }
+
+  // ===== LOGOUT =====
+  async function fazerLogout() {
+    if (!confirm("Deseja realmente sair do sistema?")) return;
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    } catch(e) {}
+    window.location.href = "index.html";
+  }
+
+  // ===== STATS =====
+  async function atualizarDados() {
+    try {
+      const res = await fetch("/api/dashboard/stats", { credentials: "include" });
+      if (res.status === 401) { window.location.href = "index.html"; return; }
+      const data = await res.json().catch(()=>({}));
+      if (!data.success) return showAlert("Erro ao carregar stats.", "error");
+
+      const s = data.stats || {};
+      document.getElementById("totalContratos").textContent = String(s.total_contratos ?? 0);
+      document.getElementById("contratosAtivos").textContent = String(s.contratos_ativos ?? 0);
+
+      // usuário
+      try {
+        const ures = await fetch("/api/usuario", { credentials: "include" });
+        const udata = await ures.json().catch(()=>({}));
+        if (udata.success && udata.usuario && udata.usuario.nome_completo) {
+          document.getElementById("currentUser").textContent =
+            (udata.usuario.nome_completo || "U").trim().slice(0,1).toUpperCase();
+        }
+      } catch(e){}
+
+      // notificações
+      try {
+        const nres = await fetch("/api/notificacoes", { credentials: "include" });
+        const ndata = await nres.json().catch(()=>({}));
+        if (ndata.success) {
+          document.getElementById("totalNotificacoes").textContent = String((ndata.notificacoes || []).length);
+        }
+      } catch(e){}
+
+      document.getElementById("storageUsed").textContent = calcLocalStorageKB() + " KB";
+      showAlert("Dados atualizados ✅", "success");
+    } catch (e) {
+      showAlert("Falha ao conectar no servidor.", "error");
+    }
+  }
+
+  function exportarDados() {
+    const dump = {
+      theme: localStorage.getItem("contrato-mais-theme") || "claro",
+      simulacoes: safeJSON(localStorage.getItem("contrato-mais-simulacoes") || "[]"),
+      exportado_em: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(dump, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "contrato-mais-export.json";
+    a.click();
+    URL.revokeObjectURL(url);
+
+    showAlert("Export gerado ✅", "success");
+  }
+
+  // ===== DANGER ZONE =====
+  function validarCodigo() {
+    const code = (document.getElementById("reset_code").value || "").trim();
+    const ok = code === "19192425";
+    document.getElementById("btnLimparNotificacoes").disabled = !ok;
+    document.getElementById("btnLimparContratos").disabled = !ok;
+    document.getElementById("btnResetarSistema").disabled = !ok;
+  }
+
+  function limparCacheLocal(tipo) {
+    if (!confirm("Tem certeza? Isso afeta apenas o navegador (local).")) return;
+
+    if (tipo === "simulacoes") {
+      localStorage.removeItem("contrato-mais-simulacoes");
+      showAlert("Histórico local de simulações limpo ✅", "success");
+      return;
+    }
+
+    if (tipo === "geral") {
+      const theme = localStorage.getItem("contrato-mais-theme");
+      localStorage.clear();
+      if (theme) localStorage.setItem("contrato-mais-theme", theme);
+      aplicarTema();
+      showAlert("Cache local limpo ✅", "success");
+      return;
+    }
+  }
+
+  // ✅ RESET TOTAL (SERVER + LOCAL)
+  async function resetarSistemaTotal() {
+    const code = (document.getElementById("reset_code").value || "").trim();
+
+    if (!code) {
+      showAlert("Digite o código de reset.", "error");
+      return;
+    }
+
+    if (!confirm("RESET TOTAL: isso vai APAGAR o banco (contratos/notificações) e recriar tudo. Continuar?")) return;
+
+    try {
+      const res = await fetch("/api/system/reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ code })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        showAlert(data.message || "Falha ao resetar o sistema.", "error");
+        return;
+      }
+    } catch (e) {
+      showAlert("Falha ao conectar no servidor para reset.", "error");
+      return;
+    }
+
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch (e) {}
+
+    window.location.replace("index.html");
+  }
+
+  // Mantém compatibilidade (se algum lugar ainda chamar isso)
+  async function resetarTudoLocal() {
+    return resetarSistemaTotal();
+  }
+
+  // ===== UI HELPERS =====
+  function showAlert(msg, type="info") {
+    const el = document.getElementById("alertMessage");
+    el.className = "alert";
+    el.classList.add(type === "success" ? "alert-success" : "alert-error");
+    el.textContent = msg;
+    el.style.display = "block";
+    setTimeout(() => { el.style.display = "none"; }, 3500);
+  }
+
+  function calcLocalStorageKB() {
+    let total = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      const v = localStorage.getItem(k) || "";
+      total += (k.length + v.length);
+    }
+    return Math.round(total / 1024);
+  }
+
+  function safeJSON(s) {
+    try { return JSON.parse(s); } catch(e) { return s; }
+  }
+</script>
+
+</body>
+</html>
